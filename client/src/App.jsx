@@ -1,122 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import {useState} from 'react';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+    const [loc, setLoc] = useState(0)
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    const handleCodeClick = () => {
+      setLoc(prev => prev + 1)
+    }
 
-      <div className="ticks"></div>
+    return (
+      <div style={styles.container}>
+        <main style={styles.main}>
+          <h1 style={styles.title}>CodeForge<span className="cursor">_</span></h1>
+          <div style={styles.stats}>
+            <p style={{ opacity: 0.7 }}>Lines of Code</p>
+            <p style={{opacity: 0.7}}>${Math.floor(loc).toLocaleString()}</p>
+            <p style={{ color: 'var(--green)'}}>0 LoC / sec</p>
+          </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+          <button onClick={handleCodeClick} style={styles.codeButton}>
+            WRITE CODE
+          </button>
+        </main>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        <aside style={styles.sidebar}>
+          <h3 style={styles.sidebarTitle}>Terminal Upgrades</h3>
+          <p style={{ opacity: 0.7 }}>Coming Soon...</p>
+        </aside>
+      </div>
+    )
+  }
+
+  const styles = {
+    container: { display: 'flex', height: '100vh', width: '100vw'},
+    main: {
+      flex: 1, display: flex, flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center',
+      backgroundColor: 'var(--panel)', borderRight: '1px solid var(--border)'
+    },
+
+    title: { fontSize: '3.5rem', color: 'var(--green)', marginBottom: '1rem', textShadow: '0 0 10px rgba(63, 185, 80, 0.4)' },
+    stats: { textAlign: 'center', marginBottom: '4rem' },
+    counter: { fontSize: '6rem', fontFamily: 'Fira Code, monospace', color: 'var(--cyan)', margin: '1rem 0' },
+    bigButton: {
+      backgroundColor: 'transparent', border: '2px solid var(--green)', color: 'var(--green)',
+      fontSize: '1.5rem', padding: '1.5rem 3rem', borderRadius: '4px',
+      boxShadow: 'inset 0 0 10px rgba(63, 185, 80, 02', transition: 'all 0.1s ease',
+    },
+    sidebar: { width: '400px', padding: '2rem', backgroundColor: '#0f1319'},
+    sidebarTitle: { color: 'var(--cyan)', fontSize: '1.5rem', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem', marginBottom: '1.5rem'},
+  }
 }
-
-export default App
