@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useEffect, useRef } from 'react';
 import { useStore } from './store.js'
 
 export default function App() {
@@ -48,7 +48,7 @@ export default function App() {
 }
 
 const styles = {
-  container: { display: 'flex', flexDirection: '100vh', width: '100vw'},
+  container: { display: 'flex', height: '100vh', width: '100vw'},
   main: {
     flex: 1, display: 'flex', flexDirection: 'column',
     alignItems: 'center', justifyContent: 'center',
@@ -60,7 +60,7 @@ const styles = {
   bigButton: {
     backgroundColor: 'transparent', border: '2px solid var(--green)', color: 'var(--green)',
     fontSize: '1.5rem', padding: '1.5rem 3rem', borderRadius: '4px',
-    boxShadow: 'inset 0 0 10px rgba(63, 185, 80, 0.2', transition: 'all 0.2s ease', cursor: 'pointer'
+    boxShadow: 'inset 0 0 10px rgba(63, 185, 80, 0.2)',
   },
   sidebar: { width: '400px', padding: '2rem', backgroundColor: '#0f1319'},
   sidebarTitle: {color: 'var(--cyan)', fontSize: '1.5rem', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem', marginBottom: '1.5rem'}
