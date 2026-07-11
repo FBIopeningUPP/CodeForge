@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react'
 import { useStore } from './store.js'
 import UpgradeCard from './UpgradeCard'
 import { UPGRADES } from './upgrades'
@@ -47,6 +47,9 @@ export default function App() {
     spawn(e)
   }
 
+  const [activeTier, setActiveTier] = useState(1)
+  const visibleUpgrades = UPGRADES.filter(upgrade => upgrade.tier === activeTier)
+
   return (
     <div style={styles.container}>
       <main style={{ ...styles.main, position: 'relative' }} ref={mainRef}>
@@ -60,9 +63,25 @@ export default function App() {
         <FloatingNumbers floats={floats} />
       </main>
     <aside style={styles.sidebar}>
-      <h3 style={styles.sidebarTitle}>Upgrades</h3>
-      <div style={{ overflowY: 'auto', flex:1 }}>
-        {UPGRADES.map(upgrade => (
+      <h3 style={styles.sidebarTitle}>Store</h3>
+      <div style={styles.tabContainer}>
+        {[1, 2, 3, 4].map(tier => (
+          <button
+            key={tier}
+            onClick={() => setActiveTier(tier)}
+            style={{
+              backgroundColor: activeTier === tier ? 'rgba(88, 166, 255, 0.1)' : 'transparent',
+              borderColor: activeTier === tier ? 'var(--cyan)' : 'var(--border)',
+              color: activeTier === tier ? 'var(--cyan)' : 'var(--text)',
+              opacity: activeTier === tier ? 1 : 0.7,
+            }}
+          >
+            Tier {tier}
+          </button>
+        ))}
+      </div>
+      <div style={styles.upgradeList}>
+        {visibleUpgrades.map(upgrade => (
           <UpgradeCard key={upgrade.id} upgrade={upgrade} />
         ))}
       </div>
