@@ -211,7 +211,7 @@ const styles = {
     cursor: 'default',
   },
   trophyIcon: { fontSize: '1.5rem' },
-  trophyName: { fontFamily: 'var(--text)'},
+  trophyName: { color: 'var(--text)'},
 
   settingsPanel: {
     flex: 1,

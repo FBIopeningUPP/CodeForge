@@ -9,13 +9,23 @@ export const useStore = create(
             loc: 0,
             locPerSec: 0,
             clickPower: 1,
+            lifetimeLoc: 0,
+            refactorTokens: 0,
             lastSaveTime: Date.now(),
 
             owned: Object.fromEntries(UPGRADES.map(u => [u.id, 0])),
 
-            click: () => set((state) => ({ loc: state.loc + state.clickPower })),
+            click: () => set((state) => {
+                const multiplier = 1 + (state.refactorTokens * 0.1)
+                const earned = state.clickPower * multiplier
+                return { loc: state.loc + earned, lifetimeLoc: state.lifetimeLoc + earned }
+            }),
 
-            addAutoLoc: (amount) => set((state) => ({ loc: state.loc + amount })),
+            addAutoLoc: (amount) => set((state) => {
+                const multiplier = 1 + (state.refactorTokens * 0.1)
+                const earned = amount * multiplier
+                return { loc: state.loc + earned, lifetimeLoc: state.lifetimeLoc + earned }
+            }),
 
             buyUpgrade: (id) => {
                 const state = get()
@@ -39,7 +49,20 @@ export const useStore = create(
                 })
             },
 
-            wipeSave: () => ({
+            refactor: () => set((state) => {
+                if (state.lifetimeLoc < 1000000) return state;
+
+                const earnedTokens = Math.floor(Math.cbrt(state.lifetimeLoc / 1000000));
+
+                return {
+                    loc: 0,
+                    locPerSec: 0,
+                    owned: Object.fromEntries(UPGRADES.map(u => [u.id, 0])),
+                    refactorTokens: state.refactorTokens + earnedTokens,
+                }
+            }),
+
+            wipeSave: () => set({
                 loc: 0,
                 locPerSec: 0,
                 unlockedAchievements: [],
