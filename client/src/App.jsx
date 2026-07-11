@@ -9,6 +9,7 @@ import GoldenBug from './GoldenBug'
 import TypingTest from './TypingTest'
 import { RESEARCH } from './research'
 import ServerRack from './ServerRack'
+import CoffeeMachine from './CoffeeMachine'
 
 export default function App() {
   const loc = useStore((state) => state.loc)
@@ -91,6 +92,7 @@ export default function App() {
         </div>
         <button onClick={handleClick} style={styles.bigButton}>Code!</button>
         <FloatingNumbers floats={floats} />
+        <CoffeeMachine />
         <div style={styles.trophyCase}>
           <h4 style={styles.trophyTitle}>Unlocked Achievements ({unlockedAchievements.length}/{ACHIEVEMENTS.length})</h4>
           <div style={styles.trophyGrid}>
