@@ -3,7 +3,7 @@ import { getUpgradeCost } from './upgrades'
 
 export default function UpgradeCard({ upgrade }) {
     const loc = useStore((state) => state.loc)
-    const owned = useStore((state) => state.owned[upgrade.id])
+    const owned = useStore((state) => state.owned[upgrade.id] || 0)
     const buyUpgrade = useStore((state) => state.buyUpgrade)
 
     const cost = getUpgradeCost(upgrade, owned)

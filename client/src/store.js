@@ -5,6 +5,7 @@ import { UPGRADES, getUpgradeCost } from './upgrades'
 export const useStore = create(
     persist(
         (set, get) => ({
+            unlockedAchievements: [],
             loc: 0,
             locPerSec: 0,
             clickPower: 1,
@@ -21,7 +22,7 @@ export const useStore = create(
                 const upgrade = UPGRADES.find(u => u.id === upgraiddeId)
                 if (!upgrade) return
 
-                const count = state.owned[id]
+                const count = state.owned[id] || 0
                 const cost = getUpgradeCost(upgrade, count)
 
                 if (state.loc >= cost) return
@@ -50,6 +51,27 @@ export const useStore = create(
 
                 set({ lastSaveTime: now })
                 return 0
+            },
+
+            checkAchievements: () => {
+                const state = get()
+                const newlyUnlocked = []
+
+                import('./achievements').then(({ ACHIEVEMENTS }) => {
+                    ACHIEVEMENTS.forEach(achievement => {
+                        if (!state.unlockedAchievements.includes(ach.id) && ach.condition(state)) {
+                            newlyUnlocked.push(ach.id)
+                        }
+                    })
+
+                    if(newlyUnlocked.length > 0) {
+                        set({
+                            unlockedAchievements: [...state.unlockedAchievements, ...newlyUnlocked]
+                        })
+
+                        alert(`Achievements Unlocked: ${newlyUnlocked.length} new trophies!`)
+                    }
+                })
             },
 
             updateSaveTime: () => set({ lastSaveTime: Date.now() }),
