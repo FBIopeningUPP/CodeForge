@@ -20,7 +20,7 @@ export default function App() {
 
   const refactorTokens = useStore((state) => state.refactorTokens) || 0
   const lifetimeLoc = useStore((state) => state.lifetimeLoc) || 0
-  const triggerRefactor = useStore((state) => state.triggerRefactor)
+  const triggerRefactor = useStore((state) => state.refactor)
 
   useEffect(() => {
     let frameId;
@@ -128,7 +128,7 @@ export default function App() {
       ) : activeTier === 'Refactor' ? (
         <div style={styles.settingsPanel}>
           <h4 style={{ color: 'var(--text)', marginBottom: '1.5rem', fontFamily: '"Share Tech Mono", monospace' }}>Refactor Codebase</h4>
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>\
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <p style={{ color: 'var(--cyan)', fontSize: '1.2rem', marginBottom: '0.5rem' }}>
               Refactor Tokens: <strong>{refactorTokens}</strong>
             </p>
