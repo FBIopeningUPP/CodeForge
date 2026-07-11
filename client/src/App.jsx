@@ -70,6 +70,7 @@ export default function App() {
             key={tier}
             onClick={() => setActiveTier(tier)}
             style={{
+              ...styles.tabButton,
               backgroundColor: activeTier === tier ? 'rgba(88, 166, 255, 0.1)' : 'transparent',
               borderColor: activeTier === tier ? 'var(--cyan)' : 'var(--border)',
               color: activeTier === tier ? 'var(--cyan)' : 'var(--text)',
@@ -105,6 +106,37 @@ const styles = {
     fontSize: '1.5rem', padding: '1.5rem 3rem', borderRadius: '4px',
     boxShadow: 'inset 0 0 10px rgba(63, 185, 80, 0.2)',
   },
-  sidebar: { width: '400px', padding: '2rem', backgroundColor: '#0f1319'},
-  sidebarTitle: {color: 'var(--cyan)', fontSize: '1.5rem', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem', marginBottom: '1.5rem'}
+  sidebar: {
+    width: '450px',
+    backgroundColor: '#0f1319',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
+    padding: '2rem 1.5rem',
+  },
+  sidebarTitle: {
+    color: 'var(--cyan)', fontSize: '1.5rem',
+    borderBottom: '1px solid var(--border)',
+    paddingBottom: '0.5rem', marginBottom: '1rem',
+  },
+  tabContainer: {
+    display: 'flex',
+    gap: '0.5rem',
+    marginBottom: '1rem',
+  },
+  tabButton: {
+    flex: 1,
+    padding: '0.5rem',
+    border: '1px solid var(--border)',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    transaction: 'all 0.3s ease',
+    fontSize: '0.9rem',
+    fontFamily: '"Share Tech Mono", monospace',
+  },
+  upgradeList: {
+  flex: 1,
+  overflowY: 'auto',
+  paddingRight: '0.5rem',
+  }
 }
