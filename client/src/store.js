@@ -13,6 +13,7 @@ export const useStore = create(
             lifetimeLoc: 0,
             refactorTokens: 0,
             unlockedResearch: [],
+            totalClicks: 0,
             boostActive: false,
             lastSaveTime: Date.now(),
 
@@ -22,9 +23,9 @@ export const useStore = create(
                 const tokenPower = state.unlockedResearch.includes('better_math') ? 0.2 : 0.1
                 const bugMultiplier = state.boostActive ? (state.unlockedResearch.includes('golden_age') ? 5 : 2) : 1
                 const multiplier = (1 + (state.refactorTokens * tokenPower)) * bugMultiplier
-                const clickBase = state.clickPower + (state.unlockedResearch.includes('heavy_fingers') ? 1 (state.locPerSec * 0.05) : 0)
+                const clickBase = state.clickPower + (state.unlockedResearch.includes('heavy_fingers') ? (state.locPerSec * 0.05) : 0)
                 const earned = clickBase * multiplier
-                return { loc: state.loc + earned, lifetimeLoc: state.lifetimeLoc + earned }
+                return { loc: state.loc + earned, lifetimeLoc: state.lifetimeLoc + earned, totalClicks: (state.totalClicks || 0) + 1 }
             }),
 
             addAutoLoc: (amount) => set((state) => {
