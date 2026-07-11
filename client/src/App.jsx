@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useStore } from './store.js'
-import UpgradeCard from './UpgradeCard.jsx'
+import UpgradeCard from './upgradeCard'
 import { UPGRADES } from './upgrades'
 import { ACHIEVEMENTS } from './achievements'
 import FloatingText, { FloatingNumbers } from './FloatingText'
