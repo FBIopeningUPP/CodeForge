@@ -8,6 +8,7 @@ import MatrixRain from './MatrixRain'
 import GoldenBug from './GoldenBug'
 import TypingTest from './TypingTest'
 import { RESEARCH } from './research'
+import ServerRack from './ServerRack'
 
 export default function App() {
   const loc = useStore((state) => state.loc)
@@ -78,6 +79,7 @@ export default function App() {
       <MatrixRain />
       <GoldenBug />
       <TypingTest />
+      <ServerRack />
       <main style={{ ...styles.main, position: 'relative' }} ref={mainRef}>
         <h1 style={styles.title}>CodeForge<span className="cursor">_</span></h1>
         <div style={styles.stats}>
