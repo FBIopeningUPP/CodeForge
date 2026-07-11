@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useStore } from './store.js'
+import UpgradeCard from './UpgradeCard'
+import { UPGRADES } from './upgrades'
 
 export default function App() {
   const loc = useStore((state) => state.loc)
@@ -41,7 +43,10 @@ export default function App() {
       </main>
     <aside style={styles.sidebar}>
       <h3 style={styles.sidebarTitle}>Upgrades</h3>
-      <p style={{opacity: 0.7}}>Coming soon...</p>
+      <div style={{ overflowY: 'auto', flex:1 }}>
+        {UPGRADES.map(upgrade => (
+          <UpgradeCard key={upgrade.id} upgrade={upgrade} />
+        ))}
     </aside>
     </div>
   )
