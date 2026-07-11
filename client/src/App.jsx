@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useStore } from './store.js'
-import UpgradeCard from './UpgradeCard'
+import UpgradeCard from './UpgradeCard.jsx'
 import { UPGRADES } from './upgrades'
 import { ACHIEVEMENTS } from './achievements'
 import FloatingText, { FloatingNumbers } from './FloatingText'
@@ -124,7 +124,7 @@ export default function App() {
           >
             Wipe Save
           </button>
-        </div>
+        </div> //yay
       ) : activeTier === 'Refactor' ? (
         <div style={styles.settingsPanel}>
           <h4 style={{ color: 'var(--text)', marginBottom: '1.5rem', fontFamily: '"Share Tech Mono", monospace' }}>Refactor Codebase</h4>
