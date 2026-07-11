@@ -19,17 +19,17 @@ export const useStore = create(
 
             buyUpgrade: (id) => {
                 const state = get()
-                const upgrade = UPGRADES.find(u => u.id === upgraiddeId)
+                const upgrade = UPGRADES.find(u => u.id === id)
                 if (!upgrade) return
 
                 const count = state.owned[id] || 0
                 const cost = getUpgradeCost(upgrade, count)
 
-                if (state.loc >= cost) return
+                if (state.loc < cost) return
 
                 const newOwned = { ...state.owned, [id]: count + 1 }
                 const newLocPerSec = UPGRADES.reduce((total, u) => {
-                    return total + u.baseProduction * newOwned[u.id]
+                    return total + u.baseProduction * (newOwned[u.id] || 0)
                 }, 0)
 
                 set({
@@ -46,7 +46,8 @@ export const useStore = create(
 
                 if (secondsAway > 5 && state.locPerSec > 0) {
                     const earned = Math.floor(state.locPerSec * secondsAway)
-                    set({ loc: state.loc + earned, lastSaveTime: now})
+                    set({ loc: state.loc + earned, lastSaveTime: now })
+                    return earned
                 }
 
                 set({ lastSaveTime: now })
@@ -58,7 +59,7 @@ export const useStore = create(
                 const newlyUnlocked = []
 
                 import('./achievements').then(({ ACHIEVEMENTS }) => {
-                    ACHIEVEMENTS.forEach(achievement => {
+                    ACHIEVEMENTS.forEach(ach => {
                         if (!state.unlockedAchievements.includes(ach.id) && ach.condition(state)) {
                             newlyUnlocked.push(ach.id)
                         }

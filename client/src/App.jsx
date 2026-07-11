@@ -24,6 +24,8 @@ export default function App() {
         useStore.getState().addAutoLoc(currentRate * deltaSeconds)
       }
 
+      useStore.getState().updateSaveTime()
+      useStore.getState().checkAchievements()
       frameId = requestAnimationFrame(gameLoop)
     }
 
