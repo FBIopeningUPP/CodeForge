@@ -18,6 +18,10 @@ export default function App() {
 
   const wipeSave = useStore((state) => state.wipeSave)
 
+  const refactorTokens = useStore((state) => state.refactorTokens) || 0
+  const lifetimeLoc = useStore((state) => state.lifetimeLoc) || 0
+  const triggerRefactor = useStore((state) => state.triggerRefactor)
+
   useEffect(() => {
     let frameId;
 
@@ -90,7 +94,7 @@ export default function App() {
     <aside style={styles.sidebar}>
       <h3 style={styles.sidebarTitle}>Store</h3>
       <div style={styles.tabContainer}>
-        {[1, 2, 3, 4, 'Settings'].map(tier => (
+        {[1, 2, 3, 4, 'Refactor', 'Settings'].map(tier => (
           <button
             key={tier}
             onClick={() => setActiveTier(tier)}
@@ -119,6 +123,39 @@ export default function App() {
             style={styles.dangerButton}
           >
             Wipe Save
+          </button>
+        </div>
+      ) : activeTier === 'Refactor' ? (
+        <div style={styles.settingsPanel}>
+          <h4 style={{ color: 'var(--text)', marginBottom: '1.5rem', fontFamily: '"Share Tech Mono", monospace' }}>Refactor Codebase</h4>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>\
+            <p style={{ color: 'var(--cyan)', fontSize: '1.2rem', marginBottom: '0.5rem' }}>
+              Refactor Tokens: <strong>{refactorTokens}</strong>
+            </p>
+            <p style={{ opacity: 0.8, fontSize: '0.9rem' }}>
+              Permanent Multiplier: <strong style={{ color: 'var(--green)' }}>+{(refactorTokens * 10).toFixed(0)}%</strong>
+            </p>
+        </div>
+
+        <div style={{ backgroundColor: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '4px', marginBottom: '2rem', width: '100%',textAlign: 'center', border: '1px solid var(--border)' }}>
+          <p style={{ opacity: 0.8, fontSize: '0.8rem', marginBottom: '0.5rem' }}>Lifetime Lines of Code:</p>
+          <p style={{ color: 'var(--text)', fontSize: '1.2rem', fontFamily: '"Fira Code", monospace' }}>{Math.floor(lifetimeLoc).toLocaleString()}</p>
+          <p style={{ opacity: 0.8, fontSize: '0.8rem', marginTop: '1.5rem', marginBottom: '0.5rem' }}>Tokens on next Refactor:</p>
+          <p style={{ color: 'var(--cyan)', fontSize: '2rem', fontWeight: 'bold' }}>
+            +{Math.floor(Math.cbrt(Math.max(0, lifetimeLoc) / 1000000))}
+          </p>
+        </div>
+      <button
+        onClick={() => {
+          if (lifetimeLoc < 1000000) {
+            alert("You need at least 1,000,000 Lifetime LoC to Refactor!")
+              } else if (window.confirm('Are you sure you want to Refactor? This will wipe your current LoC and Upgrades for permanent tokens.')) {
+                triggerRefactor()
+              }
+            }}
+            style={{ ...styles.dangerButton, borderColor: 'var(--cyan)', color: 'var(--cyan)', backgroundColor: 'rgba(88, 166, 255, 0.1)' }}
+          >
+            INITIATE REFACTOR
           </button>
         </div>
       ) : (
