@@ -5,7 +5,7 @@ export default function MatrixRain() {
     
     useEffect(() => {
         const canvas = canvasRef.current;
-        const xtx = canvas.getContext("2d");
+        const ctx = canvas.getContext("2d");
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -24,7 +24,7 @@ export default function MatrixRain() {
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             ctx.fillStyle = "#0F0";
-            ctx.fontSize = fontSize + 'px "Fira Code", monospace';
+            ctx.font = fontSize + 'px "Fira Code", monospace';
 
             for (let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
