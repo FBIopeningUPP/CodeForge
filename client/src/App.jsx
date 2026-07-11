@@ -28,6 +28,10 @@ export default function App() {
 
   const unlockedResearch = useStore((state) => state.unlockedResearch) || []
   const buyResearch = useStore((state) => state.buyResearch)
+
+  const totalClicks = useStore((state) => state.totalClicks) || 0;
+  const owned = useStore((state) => state.owned) || {};
+  const boostActive = useStore((state) => state.boostActive) || false;
   
   useEffect(() => {
     let frameId;
@@ -210,28 +214,28 @@ export default function App() {
           </button>
         </div>
       ) : activeTier === 'Stats' ? (
-        <div style={{ ...styles.settingsPanel, padding: '0 1rem' }}>
-          <h4 style={{ color: 'var(--cyan)', marginBottom: '2rem', marginTop: '1rem', fontFamily: '"Share Tech Mono", monospace', fontSize: '1.5rem'}}>Statistics</h4>
-          <div style={{ width: '100%', textAlign: 'left', backgroundColor: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '4px', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '1rem', fontSize: '1.1rem' }}>
-            <p style={{ color: 'var(--text)' }}>Lifetime LoC: 
-              <strong style={{color: 'var(--green)', float: 'right', fontFamily: '"Fira Code", monospace'}}>{Math.floor(lifetimeLoc).toLocaleString()}</strong>
-            </p>      
-            <p style={{ color: 'var(--text)' }}>Total Clicks: 
-              <strong style={{color: 'var(--cyan)', float: 'right', fontFamily: '"Fira Code", monospace'}}>{(useStore((state) => state.totalClicks) || 0).toLocaleString()}</strong>
-            </p>            
-            <p style={{ color: 'var(--text)' }}>Achievements: 
-              <strong style={{color: '#ffea00', float: 'right', fontFamily: '"Fira Code", monospace'}}>{unlockedAchievements.length} / {ACHIEVEMENTS.length}</strong>
-            </p>           
-            <p style={{ color: 'var(--text)' }}>Upgrades Owned: 
-              <strong style={{color: 'var(--text)', float: 'right', fontFamily: '"Fira Code", monospace'}}>{Object.values(useStore((state) => state.owned)).reduce((a,b)=>a+b, 0)}</strong>
-            </p>            
-            <p style={{ color: 'var(--text)' }}>Current Multiplier: 
-              <strong style={{color: '#ff4444', float: 'right', fontFamily: '"Fira Code", monospace'}}>
-                {((1 + (refactorTokens * (unlockedResearch.includes('better_math') ? 0.2 : 0.1))) * (useStore(state => state.boostActive) ? (unlockedResearch.includes('golden_age') ? 5 : 2) : 1)).toFixed(2)}x
-              </strong>
-            </p>
-          </div>
-        </div>
+            <div style={{ ...styles.settingsPanel, padding: '0 1rem' }}>
+              <h4 style={{ color: 'var(--cyan)', marginBottom: '2rem', marginTop: '1rem', fontFamily: '"Share Tech Mono", monospace', fontSize: '1.5rem'}}>Statistics</h4>
+              <div style={{ width: '100%', textAlign: 'left', backgroundColor: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '4px', border:'1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '1rem', fontSize: '1.1rem' }}>
+                <p style={{ color: 'var(--text)' }}>Lifetime LoC:
+                  <strong style={{color: 'var(--green)', float: 'right', fontFamily: '"Fira Code", monospace'}}>{Math.floor(lifetimeLoc).toLocaleString()}</strong>
+                </p>
+                <p style={{ color: 'var(--text)' }}>Total Clicks:
+                  <strong style={{color: 'var(--cyan)', float: 'right', fontFamily: '"Fira Code", monospace'}}>{totalClicks.toLocaleString()}</strong>
+                </p>
+                <p style={{ color: 'var(--text)' }}>Achievements:
+                  <strong style={{color: '#ffea00', float: 'right', fontFamily: '"Fira Code", monospace'}}>{unlockedAchievements.length} / {ACHIEVEMENTS.length}</strong>
+                </p>
+                <p style={{ color: 'var(--text)' }}>Upgrades Owned:
+                  <strong style={{color: 'var(--text)', float: 'right', fontFamily: '"Fira Code", monospace'}}>{Object.values(owned).reduce((a,b)=>a+b,0)}</strong>
+                </p>
+                <p style={{ color: 'var(--text)' }}>Current Multiplier:
+                  <strong style={{color: '#ff4444', float: 'right', fontFamily: '"Fira Code", monospace'}}>
+                    {((1 + (refactorTokens * (unlockedResearch.includes('better_math') ? 0.2 : 0.1))) * (boostActive ? (unlockedResearch.includes('golden_age') ? 5 : 2) : 1)).toFixed(2)}x
+                  </strong>
+                </p>
+              </div>
+            </div>
       ) : (
         <div style={styles.upgradeList}>
           {visibleUpgrades.map(upgrade => (
