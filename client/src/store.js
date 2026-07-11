@@ -11,18 +11,19 @@ export const useStore = create(
             clickPower: 1,
             lifetimeLoc: 0,
             refactorTokens: 0,
+            boostActive: false,
             lastSaveTime: Date.now(),
 
             owned: Object.fromEntries(UPGRADES.map(u => [u.id, 0])),
 
             click: () => set((state) => {
-                const multiplier = 1 + (state.refactorTokens * 0.1)
+                const multiplier = (1 + (state.refactorTokens * 0.1)) * (state.boostActive ? 2 : 1)
                 const earned = state.clickPower * multiplier
                 return { loc: state.loc + earned, lifetimeLoc: state.lifetimeLoc + earned }
             }),
 
             addAutoLoc: (amount) => set((state) => {
-                const multiplier = 1 + (state.refactorTokens * 0.1)
+                const multiplier = (1 + (state.refactorTokens * 0.1)) * (state.boostActive ? 2 : 1)
                 const earned = amount * multiplier
                 return { loc: state.loc + earned, lifetimeLoc: state.lifetimeLoc + earned }
             }),
@@ -61,6 +62,13 @@ export const useStore = create(
                     refactorTokens: state.refactorTokens + earnedTokens,
                 }
             }),
+
+            triggerBoost: () => {
+                set({ boostActive: true })
+                setTimeout(() => {
+                    set({ boostActive: false })
+                }, 30000) 
+            },
 
             wipeSave: () => set({
                 loc: 0,

@@ -5,6 +5,7 @@ import { UPGRADES } from './upgrades'
 import { ACHIEVEMENTS } from './achievements'
 import FloatingText, { FloatingNumbers } from './FloatingText'
 import MatrixRain from './MatrixRain'
+import GoldenBug from './GoldenBug'
 
 export default function App() {
   const loc = useStore((state) => state.loc)
@@ -66,6 +67,7 @@ export default function App() {
   return (
     <div style={styles.container}>
       <MatrixRain />
+      <GoldenBug />
       <main style={{ ...styles.main, position: 'relative' }} ref={mainRef}>
         <h1 style={styles.title}>CodeForge<span className="cursor">_</span></h1>
         <div style={styles.stats}>
