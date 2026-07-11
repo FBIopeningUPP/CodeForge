@@ -73,6 +73,82 @@ export const UPGRADES = [
         baseProduction: 2000,
         description: 'what aalll u are doing with those freaking 64 cores',
         icon: '🖥️',
+    },
+
+    //tier 3 infrastructure and al l 
+    {
+        id: 'local_server',
+        name: 'Local Server',
+        tier: 3,
+        baseCost: 10000000,
+        baseProduction: 10000,
+        description: 'A freaking rapsberry pi is a server now',
+        icon: '🍓',
+    },
+    {
+        id: 'cloud_vps',
+        name: 'Cloud VPS',
+        tier: 3,
+        baseCost: 50000000,
+        baseProduction: 50000,
+        description: 'finally something better',
+        icon: '☁️',
+    },
+    {
+        id: 'k8s_cluster',
+        name: 'Kubernetes Cluster',
+        tier: 3,
+        baseCost: 100000000,
+        baseProduction: 200000,
+        description: 'do u really know how this shits works',
+        icon: '☸️',
+    },
+    {
+        id: 'global_cdn',
+        name: 'Global CDN',
+        tier: 3,
+        baseCost: 1000000000,
+        baseProduction: 1000000,
+        description: 'Freaking chaching',
+        icon: '🌐',
+    },
+
+    //tier 4 slavery
+    {
+        id: 'interns',
+        name: 'Unpaid Interns',
+        tier: 4,
+        baseCost: 10000000000,
+        baseProduction: 10000000,
+        description: 'Damn u gotta teach them now how to code and bullshit',
+        icon: '👨‍💻',
+    },
+    {
+        id: 'junior_dev',
+        name: 'Junior Developer',
+        tier: 4,
+        baseCost: 50000000000,
+        baseProduction: 50000000,
+        description: 'Stackoverflow lover',
+        icon: '👨‍💻',
+    },
+    {
+        id: 'senior_arch',
+        name: 'Senior Architecteture',
+        tier: 4,
+        baseCost: 100000000000,
+        baseProduction: 200000000,
+        description: 'Excalidraw time spender and never codes',
+        icon: '👨‍💻',
+    },
+    {
+        id: 'ai_programmer',
+        name: 'AI Programmer',
+        tier: 4,
+        baseCost: 1000000000000,
+        baseProduction: 1000000000,
+        description: 'Engineer nah, more like a prompt engineer',
+        icon: '🤖',
     }
 ]
 
