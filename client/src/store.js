@@ -73,6 +73,8 @@ export const useStore = create(
             wipeSave: () => set({
                 loc: 0,
                 locPerSec: 0,
+                refactorTokens: 0,
+                lifetimeLoc: 0,
                 unlockedAchievements: [],
                 owned: Object.fromEntries(UPGRADES.map(u => [u.id, 0])),
             }),
