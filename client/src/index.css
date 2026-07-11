@@ -25,3 +25,8 @@ button {
 
 @keyframes blink { 50% { opacity: 0; } }
 .cursor { animation: blink 1s step-end infinite; }
+
+@keyframes floatUp {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-80px); }
+}

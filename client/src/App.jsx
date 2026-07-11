@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useStore } from './store.js'
 import UpgradeCard from './UpgradeCard'
 import { UPGRADES } from './upgrades'
+import FloatingText, { FloatingNumbers } from './FloatingText'
 
 export default function App() {
   const loc = useStore((state) => state.loc)
@@ -37,16 +38,26 @@ export default function App() {
     }
   }, [])
 
+  const mainRef = useRef(null)
+  const clickPower = useStore((state) => state.clickPower)
+  const { spawn, floats} = FloatingText({ clickPower, containerRef: mainRef })
+
+  const handleClick = (e) => {
+    handleCodeClick()
+    spawn(e)
+  }
+
   return (
     <div style={styles.container}>
-      <main style={styles.main}>
+      <main style={{ ...styles.main, position: 'relative' }} ref={mainRef}>
         <h1 style={styles.title}>CodeForge<span className="cursor">_</span></h1>
         <div style={styles.stats}>
           <p style={{opacity: 0.7}}>Lines of Code</p>
           <h2 style={styles.counter}>{Math.floor(loc).toLocaleString()}</h2>
           <p style={{opacity: 0.7}}>Lines of Code per Second: {locPerSec.toFixed(2)}</p>
         </div>
-        <button onClick={handleCodeClick} style={styles.bigButton}>Code!</button>
+        <button onClick={handleClick} style={styles.bigButton}>Code!</button>
+        <FloatingNumbers floats={floats} />
       </main>
     <aside style={styles.sidebar}>
       <h3 style={styles.sidebarTitle}>Upgrades</h3>
