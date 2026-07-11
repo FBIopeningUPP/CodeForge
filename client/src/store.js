@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { UPGRADES, getUpgradeCost } from './upgrades'
+import { RESEARCH } from './research'
 
 export const useStore = create(
     persist(
@@ -18,13 +19,18 @@ export const useStore = create(
             owned: Object.fromEntries(UPGRADES.map(u => [u.id, 0])),
 
             click: () => set((state) => {
-                const multiplier = (1 + (state.refactorTokens * 0.1)) * (state.boostActive ? 2 : 1)
-                const earned = state.clickPower * multiplier
+                const tokenPower = state.unlockedResearch.includes('better_math') ? 0.2 : 0.1
+                const bugMultiplier = state.boostActive ? (state.unlockedResearch.includes('golden_age') ? 5 : 2) : 1
+                const multiplier = (1 + (state.refactorTokens * tokenPower)) * bugMultiplier
+                const clickBase = state.clickPower + (state.unlockedResearch.includes('heavy_fingers') ? 1 (state.locPerSec * 0.05) : 0)
+                const earned = clickBase * multiplier
                 return { loc: state.loc + earned, lifetimeLoc: state.lifetimeLoc + earned }
             }),
 
             addAutoLoc: (amount) => set((state) => {
-                const multiplier = (1 + (state.refactorTokens * 0.1)) * (state.boostActive ? 2 : 1)
+                const tokenPower = state.unlockedResearch.includes('better_math') ? 0.2 : 0.1
+                const bugMultiplier = state.boostActive ? (state.unlockedResearch.includes('golden_age') ? 5 : 2) : 1
+                const multiplier = (1 + (state.refactorTokens * tokenPower)) * bugMultiplier
                 const earned = amount * multiplier
                 return { loc: state.loc + earned, lifetimeLoc: state.lifetimeLoc + earned }
             }),
@@ -72,8 +78,8 @@ export const useStore = create(
             },
 
             buyResearch: (id) => set((state) => {
-                const node = require('./research').RESEARCH_NODES.find(r => r.id === id)
-                if (!node || state.unlockedResearch.includes(id)) || state.refactorTokens < node.cost) return
+                const node = RESEARCH.find(r => r.id === id)
+                if (!node || state.unlockedResearch.includes(id) || state.refactorTokens < node.cost) return state;
 
                 return {
                     refactorTokens: state.refactorTokens - node.cost,
