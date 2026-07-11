@@ -7,6 +7,7 @@ import FloatingText, { FloatingNumbers } from './FloatingText'
 import MatrixRain from './MatrixRain'
 import GoldenBug from './GoldenBug'
 import TypingTest from './TypingTest'
+import { RESEARCH } from './research'
 
 export default function App() {
   const loc = useStore((state) => state.loc)
@@ -25,6 +26,9 @@ export default function App() {
   const lifetimeLoc = useStore((state) => state.lifetimeLoc) || 0
   const triggerRefactor = useStore((state) => state.refactor)
 
+  const unlockedResearch = useStore((state) => state.unlockedResearch) || []
+  const buyResearch = useStore((state) => state.buyResearch)
+  
   useEffect(() => {
     let frameId;
 
@@ -100,7 +104,7 @@ export default function App() {
     <aside style={styles.sidebar}>
       <h3 style={styles.sidebarTitle}>Store</h3>
       <div style={styles.tabContainer}>
-        {[1, 2, 3, 4, 'Refactor', 'Settings'].map(tier => (
+        {[1, 2, 3, 4, 'Refactor', 'Research', 'Settings'].map(tier => (
           <button
             key={tier}
             onClick={() => setActiveTier(tier)}
@@ -131,6 +135,47 @@ export default function App() {
             Wipe Save
           </button>
         </div> //yay
+      ) : activeTier === 'Research' ? (
+        <div style={{ ...styles.settingsPanel, padding: '0 1rem', overflowY: 'auto' }}>
+          <h4 style={{ color: 'var(--cyan)', marginBottom: '1rem', marginTop: '1rem', fontFamily: '"Share Tech Mono", monospace', fontSize: '1.5rem'}}>Tech Tree</h4>
+          <p style={{ color: 'var(--text)', marginBottom: '1.5rem', fontSize: '1.1rem' }}>
+            Tokens Available: <strong style={{color: 'var(--green)'}}>{refactorTokens}</strong>
+          </p>
+
+          <div style={{ width: '100%' }}>
+                {RESEARCH.map(node => {
+                  const isUnlocked = unlockedResearch.includes(node.id);
+                  const canAfford = refactorTokens >= node.cost && !isUnlocked;
+
+                  return (
+                    <div key={node.id} style={{
+                        border: '1px solid',
+                        borderColor: isUnlocked ? 'var(--green)' : (canAfford ? 'var(--cyan)' : 'var(--border)'),
+                        borderRadius: '4px',
+                        padding: '1rem',
+                        marginBottom: '1rem',
+                        opacity: isUnlocked ? 0.6 : (canAfford ? 1 : 0.4),
+                        cursor: canAfford ? 'pointer' : 'default',
+                        backgroundColor: isUnlocked ? 'rgba(63, 185, 80, 0.05)' : 'rgba(255,255,255,0.02)',
+                        transition: 'all 0.2s ease'
+                    }}
+                    onClick={() => { if(canAfford) buyResearch(node.id) }}
+                    >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                            <span style={{ fontSize: '1.8rem' }}>{node.icon}</span>
+                            <div style={{ textAlign: 'left' }}>
+                                <p style={{ color: isUnlocked ? 'var(--green)' : 'var(--cyan)', fontWeight: 'bold', fontSize: '1.1rem' }}>{node.name}</p>
+                                <p style={{ fontSize: '0.8rem', opacity: 0.8, fontStyle: 'italic', marginTop: '0.2rem' }}>{node.description}</p>
+                            </div>
+                        </div>
+                        <div style={{ textAlign: 'right', fontSize: '0.9rem', fontWeight: 'bold', color: isUnlocked ? 'var(--green)' : 'var(--text)' }}>
+                            {isUnlocked ? '✓ UNLOCKED' : `Cost: ${node.cost} Tokens`}
+                        </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
       ) : activeTier === 'Refactor' ? (
         <div style={styles.settingsPanel}>
           <h4 style={{ color: 'var(--text)', marginBottom: '1.5rem', fontFamily: '"Share Tech Mono", monospace' }}>Refactor Codebase</h4>
