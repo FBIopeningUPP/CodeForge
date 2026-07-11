@@ -66,7 +66,7 @@ const styles = {
         justifyContent: 'space-between',
         fontSize: '0.75rem',
     },
-    cost: { coilor: 'var(--green)' },
+    cost: { color: 'var(--green)' },
     owned: { color: 'var(--text)', opacity: 0.7 },
     production: {
         fontSize: '0.7rem',
