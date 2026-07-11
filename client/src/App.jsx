@@ -47,6 +47,7 @@ export default function App() {
         {UPGRADES.map(upgrade => (
           <UpgradeCard key={upgrade.id} upgrade={upgrade} />
         ))}
+      </div>
     </aside>
     </div>
   )

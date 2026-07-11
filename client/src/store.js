@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { UPGRADES, getUpgradeCost } from './upgrades'
 
-export const useStore = create((set) => ({
+export const useStore = create((set, get) => ({
     loc: 0,
     locPerSec: 0,
     clickPower: 1,

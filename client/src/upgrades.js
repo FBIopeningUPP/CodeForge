@@ -5,7 +5,7 @@ export const UPGRADES = [
         name: 'Notepad++',
         tier: 1,
         baseCost: 10,
-        bastProduction: 0.1,
+        baseProduction: 0.1,
         description: 'It Highlights syntax lawl',
         icon: '📝',
     },

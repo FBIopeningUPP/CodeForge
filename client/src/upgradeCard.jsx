@@ -13,7 +13,7 @@ export default function UpgradeCard({ upgrade }) {
         <div
             onClick={() => canAfford && buyUpgrade(upgrade.id)}
             style={{
-                ...StyleSheet.card,
+                ...styles.card,
                 opacity: canAfford ? 1 : 0.4,
                 cursor: canAfford ? 'pointer' : 'not-allowed',
                 borderColor: canAfford ? 'var(--green)' : 'var(--border)',
@@ -23,7 +23,7 @@ export default function UpgradeCard({ upgrade }) {
                 <span style={styles.icon}>{upgrade.icon}</span>
                 <div>
                     <p style={styles.name}>{upgrade.name}</p>
-                    <p style={styles.description}>{upgrade.description}</p>
+                    <p style={styles.desc}>{upgrade.description}</p>
                 </div>
             </div>
             <div style={styles.bottom}>
