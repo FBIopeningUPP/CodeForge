@@ -4,6 +4,7 @@ import UpgradeCard from './upgradeCard'
 import { UPGRADES } from './upgrades'
 import { ACHIEVEMENTS } from './achievements'
 import FloatingText, { FloatingNumbers } from './FloatingText'
+import MatrixRain from './MatrixRain'
 
 export default function App() {
   const loc = useStore((state) => state.loc)
@@ -64,6 +65,7 @@ export default function App() {
 
   return (
     <div style={styles.container}>
+      <MatrixRain />
       <main style={{ ...styles.main, position: 'relative' }} ref={mainRef}>
         <h1 style={styles.title}>CodeForge<span className="cursor">_</span></h1>
         <div style={styles.stats}>
@@ -175,7 +177,7 @@ const styles = {
   main: {
     flex: 1, display: 'flex', flexDirection: 'column',
     alignItems: 'center', justifyContent: 'center',
-    backgroundColor: 'var(--panel)', borderRight: '1px solid var(--border)'
+    backgroundColor: 'rgba(22, 27, 34, 0.75)', borderRight: '1px solid var(--border)', zIndex: 1
   },
   title: {fontSize: '3.5rem', color: 'var(--green)', marginBottom: '3rem', textShadow: '0 0 10px rgba(63, 185, 80, 0.4)'},
   stats: {textAlign: 'center', marginBottom: '4rem'},
