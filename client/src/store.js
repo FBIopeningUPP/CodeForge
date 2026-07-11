@@ -39,6 +39,13 @@ export const useStore = create(
                 })
             },
 
+            wipeSave: () => ({
+                loc: 0,
+                locPerSec: 0,
+                unlockedAchievements: [],
+                owned: Object.fromEntries(UPGRADES.map(u => [u.id, 0])),
+            }),
+
             calculateOfflineProgress: () => {
                 const state = get()
                 const now = Date.now()

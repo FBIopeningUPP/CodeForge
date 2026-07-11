@@ -16,6 +16,8 @@ export default function App() {
 
   const lastTime = useRef(performance.now())
 
+  const wipeSave = useStore((state) => state.wipeSave)
+
   useEffect(() => {
     let frameId;
 
@@ -88,7 +90,7 @@ export default function App() {
     <aside style={styles.sidebar}>
       <h3 style={styles.sidebarTitle}>Store</h3>
       <div style={styles.tabContainer}>
-        {[1, 2, 3, 4].map(tier => (
+        {[1, 2, 3, 4, 'Settings'].map(tier => (
           <button
             key={tier}
             onClick={() => setActiveTier(tier)}
@@ -100,15 +102,32 @@ export default function App() {
               opacity: activeTier === tier ? 1 : 0.7,
             }}
           >
-            Tier {tier}
+            {typeof tier === 'number' ? `Tier ${tier}` : '⚙️'}
           </button>
         ))}
       </div>
-      <div style={styles.upgradeList}>
-        {visibleUpgrades.map(upgrade => (
-          <UpgradeCard key={upgrade.id} upgrade={upgrade} />
-        ))}
-      </div>
+      {}
+      {activeTier === 'Settings' ? (
+        <div style={styles.settingsPanel}>
+          <h4 style={{color: 'var(--text)', marginBottom: '1rem', fontFamily: '"Share Tech Mono", monospace'}}>Settings</h4>
+          <button
+            onClick={() => {
+              if (window.confirm('Are you sure you want to wipe your save? This cannot be undone.')) {
+                wipeSave()
+              }
+            }}
+            style={styles.dangerButton}
+          >
+            Wipe Save
+          </button>
+        </div>
+      ) : (
+        <div style={styles.upgradeList}>
+          {visibleUpgrades.map(upgrade => (
+            <UpgradeCard key={upgrade.id} upgrade={upgrade} />
+          ))}
+        </div>
+      )}
     </aside>
     </div>
   )
@@ -193,4 +212,24 @@ const styles = {
   },
   trophyIcon: { fontSize: '1.5rem' },
   trophyName: { fontFamily: 'var(--text)'},
+
+  settingsPanel: {
+    flex: 1,
+    padding: '1rem',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  dangerButton: {
+    backgroundColor: 'var(--red)',
+    border: '1px solid #ff4444',
+    color: '#ff4444',
+    padding: '1rem 2rem',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontFamily: '"Fira Code", monospace',
+    fontSize: '1rem',
+    fontWeight: 'bold',
+    transition: 'all 0.3s ease',
+  },
 }
