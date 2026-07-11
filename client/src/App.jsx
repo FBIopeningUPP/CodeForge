@@ -6,6 +6,7 @@ import { ACHIEVEMENTS } from './achievements'
 import FloatingText, { FloatingNumbers } from './FloatingText'
 import MatrixRain from './MatrixRain'
 import GoldenBug from './GoldenBug'
+import TypingTest from './TypingTest'
 
 export default function App() {
   const loc = useStore((state) => state.loc)
@@ -68,6 +69,7 @@ export default function App() {
     <div style={styles.container}>
       <MatrixRain />
       <GoldenBug />
+      <TypingTest />
       <main style={{ ...styles.main, position: 'relative' }} ref={mainRef}>
         <h1 style={styles.title}>CodeForge<span className="cursor">_</span></h1>
         <div style={styles.stats}>

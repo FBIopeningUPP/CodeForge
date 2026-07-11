@@ -11,6 +11,7 @@ export const useStore = create(
             clickPower: 1,
             lifetimeLoc: 0,
             refactorTokens: 0,
+            unlockedResearch: [],
             boostActive: false,
             lastSaveTime: Date.now(),
 
@@ -69,6 +70,16 @@ export const useStore = create(
                     set({ boostActive: false })
                 }, 30000) 
             },
+
+            buyResearch: (id) => set((state) => {
+                const node = require('./research').RESEARCH_NODES.find(r => r.id === id)
+                if (!node || state.unlockedResearch.includes(id)) || state.refactorTokens < node.cost) return
+
+                return {
+                    refactorTokens: state.refactorTokens - node.cost,
+                    unlockedResearch: [...state.unlockedResearch, id]
+                }
+            }),
 
             wipeSave: () => set({
                 loc: 0,
