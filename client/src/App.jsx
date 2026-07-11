@@ -2,12 +2,16 @@ import { useEffect, useRef, useState } from 'react'
 import { useStore } from './store.js'
 import UpgradeCard from './UpgradeCard'
 import { UPGRADES } from './upgrades'
+import { ACHIEVEMENTS } from './achievements'
 import FloatingText, { FloatingNumbers } from './FloatingText'
 
 export default function App() {
   const loc = useStore((state) => state.loc)
 
   const locPerSec = useStore((state) => state.locPerSec)
+
+  const unlockedAchievements = useStore((state) => state.unlockedAchievements) || []
+
   const handleCodeClick = useStore((state) => state.click)
 
   const lastTime = useRef(performance.now())
@@ -58,11 +62,28 @@ export default function App() {
         <h1 style={styles.title}>CodeForge<span className="cursor">_</span></h1>
         <div style={styles.stats}>
           <p style={{opacity: 0.7}}>Lines of Code</p>
-          <h2 style={styles.counter}>{Math.floor(loc).toLocaleString()}</h2>
+          <h2 style={styles.counter}>
+              {loc.toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 })}
+          </h2>          
           <p style={{opacity: 0.7}}>Lines of Code per Second: {locPerSec.toFixed(2)}</p>
         </div>
         <button onClick={handleClick} style={styles.bigButton}>Code!</button>
         <FloatingNumbers floats={floats} />
+        <div style={styles.trophyCase}>
+          <h4 style={styles.trophyTitle}>Unlocked Achievements ({unlockedAchievements.length}/{ACHIEVEMENTS.length})</h4>
+          <div style={styles.trophyGrid}>
+            {unlockedAchievements.map(id => {
+              const ach = ACHIEVEMENTS.find(a => a.id === id)
+              if (!ach) return null
+              return(
+                <div key={ach.id} style={styles.trophy} title={ach.flavor}>
+                  <span style={styles.trophyIcon}>{ach.icon}</span>
+                  <span style={styles.trophyName}>{ach.name}</span>
+                </div>
+              )
+            })}
+        </div>
+      </div>
       </main>
     <aside style={styles.sidebar}>
       <h3 style={styles.sidebarTitle}>Store</h3>
@@ -140,5 +161,36 @@ const styles = {
   flex: 1,
   overflowY: 'auto',
   paddingRight: '0.5rem',
-  }
+  },
+  trophyCase: {
+    marginTop: '4rem',
+    width: '80%',
+    maxWidth: '600px',
+    borderTop: '1px solid var(--border)',
+    paddingTop: '1rem',
+  },
+  trophyTitle: {
+    color: 'var(--cyan)',
+    textAlign: 'center',
+    marginBottom: '1rem',
+    fontFamily: '"Share Tech Mono", monospace',
+  },
+  trophyGrid: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '1rem',
+    justifyContent: 'center',
+  },
+  trophy: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    padding: '0.5rem 1rem',
+    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+    borderRadius: '20px',
+    fontSize: '0.9rem',
+    cursor: 'default',
+  },
+  trophyIcon: { fontSize: '1.5rem' },
+  trophyName: { fontFamily: 'var(--text)'},
 }
