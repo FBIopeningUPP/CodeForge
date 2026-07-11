@@ -30,6 +30,13 @@ export default function App() {
     return () => cancelAnimationFrame(frameId)
   }, [])
 
+  useEffect(() => {
+    const earned = useStore.getState().calculateOfflineProgress()
+    if (earned > 0) {
+      alert(`Welcome back!`)
+    }
+  }, [])
+
   return (
     <div style={styles.container}>
       <main style={styles.main}>

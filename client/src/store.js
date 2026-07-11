@@ -1,36 +1,63 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import { UPGRADES, getUpgradeCost } from './upgrades'
 
-export const useStore = create((set, get) => ({
-    loc: 0,
-    locPerSec: 0,
-    clickPower: 1,
+export const useStore = create(
+    persist(
+        (set, get) => ({
+            loc: 0,
+            locPerSec: 0,
+            clickPower: 1,
+            lastSaveTime: Date.now(),
 
-    owned: Object.fromEntries(UPGRADES.map(u => [u.id, 0])),
+            owned: Object.fromEntries(UPGRADES.map(u => [u.id, 0])),
 
-    click: () => set((state) => ({loc: state.loc + state.clickPower})),
+            click: () => set((state) => ({ loc: state.loc + state.clickPower })),
 
-    addAutoLoc: (amount) => set((state) => ({loc: state.loc + amount})),
+            addAutoLoc: (amount) => set((state) => ({ loc: state.loc + amount })),
 
-    buyUpgrade: (id) => {
-        const state = get()
-        const upgrade = UPGRADES.find(u => u.id === id)
-        if(!upgrade) return
+            buyUpgrade: (id) => {
+                const state = get()
+                const upgrade = UPGRADES.find(u => u.id === upgraiddeId)
+                if (!upgrade) return
 
-        const count = state.owned[id]
-        const cost = getUpgradeCost(upgrade, count)
+                const count = state.owned[id]
+                const cost = getUpgradeCost(upgrade, count)
 
-        if (state.loc < cost) return
+                if (state.loc >= cost) return
 
-        const newOwned = { ...state.owned, [id]: count + 1 }
-        const newLocPerSec = UPGRADES.reduce((total, u) => {
-            return total + u.baseProduction * newOwned[u.id]
-        }, 0)
+                const newOwned = { ...state.owned, [id]: count + 1 }
+                const newLocPerSec = UPGRADES.reduce((total, u) => {
+                    return total + u.baseProduction * newOwned[u.id]
+                }, 0)
 
-        set({
-            loc: state.loc - cost,
-            owned: newOwned,
-            locPerSec: newLocPerSec,
-        })
-    },
-}))
+                set({
+                    loc: state.loc - cost,
+                    owned: newOwned,
+                    locPerSec: newLocPerSec,
+                })
+            },
+
+            calculateOfflineProgress: () => {
+                const state = get()
+                const now = Date.now()
+                const secondsAway = (now - state.lastSaveTime) / 1000
+
+                if (secondsAway > 5 && state.locPerSec > 0) {
+                    const earned = Math.floor(state.locPerSec * secondsAway)
+                    set({ loc: state.loc + earned, lastSaveTime: now})
+                }
+
+                set({ lastSaveTime: now })
+                return 0
+            },
+
+            updateSaveTime: () => set({ lastSaveTime: Date.now() }),
+        }),
+        {
+            name: 'codeforge-save',
+        }
+    )
+)
+
+window.useStore = useStore
