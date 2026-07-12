@@ -72,6 +72,7 @@ export default function App() {
 
   const handleClick = (e) => {
     handleCodeClick()
+    playClickSound()
     spawn(e)
   }
 
