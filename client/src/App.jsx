@@ -289,11 +289,12 @@ const styles = {
   },
   tabContainer: {
     display: 'flex',
+    flexWrap: 'wrap',
     gap: '0.5rem',
     marginBottom: '1rem',
   },
   tabButton: {
-    flex: 1,
+    flex: '1 0 30%',
     padding: '0.5rem',
     border: '1px solid var(--border)',
     borderRadius: '4px',
