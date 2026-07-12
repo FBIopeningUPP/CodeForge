@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { UPGRADES, getUpgradeCost } from './upgrades'
 import { RESEARCH } from './research'
+import { ACHIEVEMENTS } from './achievements'
 
 export const useStore = create(
     persist(
@@ -12,6 +13,49 @@ export const useStore = create(
             clickPower: 1,
             lifetimeLoc: 0,
             refactorTokens: 0,
+            notifications: [],
+            stocks: [
+                { id: 'macrosoft', name: 'Macrosoft', price: 100, owned: 0, history: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100] },
+                { id: 'gogle', name: 'Gogle', price: 150, owned: 0, history: [150, 150, 150, 150, 150, 150, 150, 150, 150, 150] },
+                { id: 'faceplant', name: 'Faceplant', price: 200, owned: 0, history: [200, 200, 200, 200, 200, 200, 200, 200, 200, 200] },
+                { id: 'amazoon', name: 'Amazoon', price: 250, owned: 0, history: [250, 250, 250, 250, 250, 250, 250, 250, 250, 250] },
+                { id: 'netflicks', name: 'Netflicks', price: 300, owned: 0, history: [300, 300, 300, 300, 300, 300, 300, 300, 300, 300] },
+            ],
+
+            updateStock: () => set((state) => {
+                const newStocks = state.stocks.map(stock => {
+                    const volatility = stock.price * 0.05
+                    const change = (Math.random() - 0.5) * volatility;
+                    const newPrice = Math.max(10, Math.floor(stock.price + change));
+                    return {
+                        ...stock,
+                        price: newPrice,
+                        history: [...stock.history.slice(1), newPrice]
+                    };
+                });
+                return { stocks: newStocks };
+            }),
+
+            buyStock: (id, amount) => set((state) => {
+                const stock = state.stocks.find(s => s.id === id);
+                const cost = stock.price * amount;
+                if (state.loc < cost) return state;
+                return {
+                    loc: state.loc - cost,
+                    stocks: state.stocks.map(s => s.id === id ? { ...s, owned: s.owned + amount } : s)
+                }
+            }),
+
+            sellStock: (id, amount) => set((state) => {
+                const stock = state.stocks.find(s => s.id === id);
+                if (stock.owned < amount) return state;
+                const profit = stock.price * amount;
+                return {
+                    loc: state.loc + profit,
+                    stocks: state.stocks.map(s => s.id === id ? { ...s, owned: s.owned - amount } : s)
+                }
+            }),
+
             unlockedResearch: [],
             totalClicks: 0,
             boostActive: false,
@@ -88,6 +132,18 @@ export const useStore = create(
                 }
             }),
 
+            notify: (message, type = 'info') => {
+                const id = Date.now() + Math.random();
+                set((state) => ({
+                    notifications: [...state.notifications, { id, message, type }]
+                }));
+                setTimeout(() => {
+                    set((state) => ({
+                        notifications: state.notifications.filter(n => n.id !== id)
+                    }));
+                }, 5000);
+            },
+
             wipeSave: () => set({
                 loc: 0,
                 locPerSec: 0,
@@ -116,21 +172,19 @@ export const useStore = create(
                 const state = get()
                 const newlyUnlocked = []
 
-                import('./achievements').then(({ ACHIEVEMENTS }) => {
-                    ACHIEVEMENTS.forEach(ach => {
-                        if (!state.unlockedAchievements.includes(ach.id) && ach.condition(state)) {
-                            newlyUnlocked.push(ach.id)
-                        }
-                    })
-
-                    if(newlyUnlocked.length > 0) {
-                        set({
-                            unlockedAchievements: [...state.unlockedAchievements, ...newlyUnlocked]
-                        })
-
-                        alert(`Achievements Unlocked: ${newlyUnlocked.length} new trophies!`)
+                ACHIEVEMENTS.forEach(ach => {
+                    if (!state.unlockedAchievements.includes(ach.id) && ach.condition(state)) {
+                        newlyUnlocked.push(ach.id)
                     }
                 })
+
+                if(newlyUnlocked.length > 0) {
+                    set({
+                        unlockedAchievements: [...state.unlockedAchievements, ...newlyUnlocked]
+                    })
+
+                    get().notify(`Achievement Unlocked: ${newlyUnlocked.length} new trophies!`, 'success')
+                }
             },
 
             updateSaveTime: () => set({ lastSaveTime: Date.now() }),

@@ -10,6 +10,8 @@ import TypingTest from './TypingTest'
 import { RESEARCH } from './research'
 import ServerRack from './ServerRack'
 import CoffeeMachine from './CoffeeMachine'
+import Notifications from './Notifications'
+import StockMarket from './StockMarket'
 
 export default function App() {
   const loc = useStore((state) => state.loc)
@@ -59,7 +61,7 @@ export default function App() {
   useEffect(() => {
     const earned = useStore.getState().calculateOfflineProgress()
     if (earned > 0) {
-      alert(`Welcome back!`)
+      useStore.getState().notify(`Welcome back! you earned ${earned.toLocaleString()} LoC while you were away.`, 'info')
     }
   }, [])
 
@@ -81,6 +83,7 @@ export default function App() {
       <GoldenBug />
       <TypingTest />
       <ServerRack />
+      <Notifications />
       <main style={{ ...styles.main, position: 'relative' }} ref={mainRef}>
         <h1 style={styles.title}>CodeForge<span className="cursor">_</span></h1>
         <div style={styles.stats}>
@@ -112,7 +115,7 @@ export default function App() {
     <aside style={styles.sidebar}>
       <h3 style={styles.sidebarTitle}>Store</h3>
       <div style={styles.tabContainer}>
-        {[1, 2, 3, 4, 'Refactor', 'Research', 'Stats', 'Settings'].map(tier => (
+        {[1, 2, 3, 4, 'Refactor', 'Research', 'Invest', 'Stats', 'Settings'].map(tier => (
           <button
             key={tier}
             onClick={() => setActiveTier(tier)}
@@ -240,6 +243,8 @@ export default function App() {
                 </p>
               </div>
             </div>
+      ) : activeTier === 'Invest' ? (
+            <StockMarket />
       ) : (
         <div style={styles.upgradeList}>
           {visibleUpgrades.map(upgrade => (
