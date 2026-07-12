@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware'
 import { UPGRADES, getUpgradeCost } from './upgrades'
 import { RESEARCH } from './research'
 import { ACHIEVEMENTS } from './achievements'
+import { playUpgradeSound } from './sound'
 
 export const useStore = create(
     persist(
@@ -89,6 +90,7 @@ export const useStore = create(
                 const cost = getUpgradeCost(upgrade, count)
 
                 if (state.loc < cost) return
+                playUpgradeSound()
 
                 const newOwned = { ...state.owned, [id]: count + 1 }
                 const newLocPerSec = UPGRADES.reduce((total, u) => {

@@ -12,6 +12,7 @@ import ServerRack from './ServerRack'
 import CoffeeMachine from './CoffeeMachine'
 import Notifications from './Notifications'
 import StockMarket from './StockMarket'
+import { playClickSound } from './sound'
 
 export default function App() {
   const loc = useStore((state) => state.loc)
